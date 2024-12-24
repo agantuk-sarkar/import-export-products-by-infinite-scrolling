@@ -1,47 +1,63 @@
 import navBar from "../components/navbar.js";
 import fetchProducts from "../components/fetchProducts.js";
 import displayProducts from "../components/displayProducts.js";
-import { controlPagination } from "../components/pagination.js";
+// import { controlPagination } from "../components/pagination.js";
 
 // getting the html elements into js
 export const productsContainer = document.querySelector(".products");
 
-const paginationContainer = document.querySelector(".pagination");
+// const paginationContainer = document.querySelector(".pagination");
 
 let pageNo = 1;
 let limit = 10;
+let totalItems = 0;
+let hasMoreData = true;
 
 // function to fetch products and display them in UI
-async function getProductsData(pageNo,limit) {
-  // fetchProducts("https://fakestoreapi.com/products").then((value)=>{
-  //     console.log("value:",value);
-  //     displayProducts(value,productsContainer);
-  // })
+async function getProductsData(pageNo, limit) {
+  let skip = (pageNo - 1) * limit;
 
-  let totalProducts = null;
+  const productDetails = await fetchProducts(skip, limit);
 
-  const productDetails = await fetchProducts(pageNo, limit);
+  totalItems = productDetails.total;
 
-  totalProducts = productDetails.total;
-  // console.log("data:", productDetails);
-  showProducts(productDetails.products,pageNo,limit,totalProducts);
+  if (skip + limit > totalItems) {
+    hasMoreData = false;
+  }
+
+  showProducts(productDetails.products);
 }
 
-getProductsData(pageNo,limit);
+getProductsData(pageNo, limit);
 
 // function to show products
-function showProducts(products,pageNo,limit,totalProducts) {
+function showProducts(products) {
   if (products) {
     displayProducts(products, productsContainer);
-    controlPagination(pageNo,totalProducts,limit,paginationContainer)
   }
 }
 
-// function to handle pagination
-export function handlePagination(currentPage,limit){
-  getProductsData(currentPage,limit);
+// to handle infinite scrolling
+window.addEventListener("scroll", (event) => {
+  // console.log("event:",event);
+  const { clientHeight, scrollTop, scrollHeight } =
+    event.target.documentElement;
 
-}
+  if (clientHeight + scrollTop === scrollHeight) {
+    pageNo = pageNo + 1;
+    limit = 10;
+
+    if (hasMoreData) {
+      getProductsData(pageNo, limit);
+    }
+  }
+});
+
+// // function to handle pagination
+// export function handlePagination(currentPage,limit){
+//   getProductsData(currentPage,limit);
+
+// }
 
 // TODO:This commented code will be removed later
 
