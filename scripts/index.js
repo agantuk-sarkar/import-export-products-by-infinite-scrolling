@@ -2,6 +2,7 @@ import navBar from "../components/navbar.js";
 import fetchProducts from "../components/fetchProducts.js";
 import displayProducts from "../components/displayProducts.js";
 import { getSearchProducts } from "../components/fetchProducts.js";
+import { debounce } from "../utils/debounce.js";
 
 // getting the html elements into js
 export const productsContainer = document.querySelector(".products");
@@ -62,8 +63,13 @@ searchInput.addEventListener("input",(event)=>{
   pageNo = 1;
   limit = 10;
 
+  functionToPass(searchText,pageNo,limit);
+
   searchProducts(searchText,pageNo,limit);
 });
+
+// passing the function search products and time delay
+const functionToPass = debounce(searchProducts,3000);
 
 // function to search products by resolving the promise
 async function searchProducts(searchText,pageNo,limit){
