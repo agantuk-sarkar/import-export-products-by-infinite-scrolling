@@ -102,3 +102,8 @@
     background-color:blue;
     color:white;
 }
+#searchInput{
+    padding:0.5rem;
+    border-radius:6px;
+    width:20rem;
+}

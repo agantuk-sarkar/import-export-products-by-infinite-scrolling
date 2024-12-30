@@ -1,12 +1,12 @@
 import navBar from "../components/navbar.js";
 import fetchProducts from "../components/fetchProducts.js";
 import displayProducts from "../components/displayProducts.js";
-// import { controlPagination } from "../components/pagination.js";
+import { getSearchProducts } from "../components/fetchProducts.js";
 
 // getting the html elements into js
 export const productsContainer = document.querySelector(".products");
 
-// const paginationContainer = document.querySelector(".pagination");
+const searchInput = document.getElementById("searchInput");
 
 let pageNo = 1;
 let limit = 10;
@@ -15,6 +15,7 @@ let hasMoreData = true;
 
 // function to fetch products and display them in UI
 async function getProductsData(pageNo, limit) {
+  
   let skip = (pageNo - 1) * limit;
 
   const productDetails = await fetchProducts(skip, limit);
@@ -53,11 +54,31 @@ window.addEventListener("scroll", (event) => {
   }
 });
 
-// // function to handle pagination
-// export function handlePagination(currentPage,limit){
-//   getProductsData(currentPage,limit);
+// to handle search inputs by adding event for search input
+searchInput.addEventListener("input",(event)=>{
 
-// }
+  const searchText = event.target.value;
+
+  pageNo = 1;
+  limit = 10;
+
+  searchProducts(searchText,pageNo,limit);
+});
+
+// function to search products by resolving the promise
+async function searchProducts(searchText,pageNo,limit){
+
+  productsContainer.innerHTML = "";
+
+  let skip = (pageNo - 1)* limit;
+
+  const products = await getSearchProducts(searchText,skip,limit);
+
+  displayProducts(products.products,productsContainer);
+}
+
+
+
 
 // TODO:This commented code will be removed later
 
