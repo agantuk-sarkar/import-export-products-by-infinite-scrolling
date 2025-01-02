@@ -50,10 +50,10 @@ window.addEventListener("scroll", (event) => {
     pageNo = pageNo + 1;
     limit = 10;
 
-    // if (hasMoreData) {
-    //   getProductsData(pageNo, limit);
-    // }
-    loadProducts(pageNo, limit);
+    if (hasMoreData) {
+      loadProducts(pageNo, limit);
+    }
+    // loadProducts(pageNo, limit);
   }
 });
 
@@ -95,8 +95,6 @@ function loadProducts(pageNo, limit) {
 // function to search products by resolving the promise
 async function searchProducts(searchText, pageNo, limit) {
   // productsContainer.innerHTML = "";
-
-  console.log("pageNo-1:", pageNo);
 
   let skip = (pageNo - 1) * limit;
 
