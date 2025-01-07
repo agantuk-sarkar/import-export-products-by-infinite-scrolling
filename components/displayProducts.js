@@ -1,6 +1,5 @@
 // display products in UI
 const displayProducts = (data,productsContainer) => {
-    // productsContainer.innerHTML = "";
   
     data?.forEach((product) => {
       const cardContainer = document.createElement("div");
