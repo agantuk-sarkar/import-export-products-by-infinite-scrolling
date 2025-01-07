@@ -10,15 +10,7 @@ function navBar(){
                 </a>
             </div>
             <div class="nav-categories">
-                <a href="./electronics.html">
-                    <p>Electronics</p>
-                </a>
-                <a href="./jewelery.html">
-                    <p>Jewellery</p>
-                </a>
-                <a href="./mens-clothing.html">
-                    <p>Mens Clothing</p>
-                </a>
+                <input type="text" id="searchInput" placeholder="Search Products"/>
             </div>
             <div class="nav-auth">
                 <a href="./login.html">
